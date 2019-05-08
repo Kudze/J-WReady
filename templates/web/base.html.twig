@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>J&amp;WReady - {% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+    {% include 'web/components/header.html.twig' %}
+    {% block body %}{% endblock %}
+    {% include 'web/components/footer.html.twig' %}
+
+    <script src="{{ asset('build/app.js') }}"></script>
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

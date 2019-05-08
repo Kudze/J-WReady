@@ -1,0 +1,16 @@
+@import "./vendor/boostrap";
+@import "./vendor/fontawesome";
+
+@import "./components/footer";
+
+.bg-white {
+  background-color: #fff;
+}
+
+.bg-dark {
+  background-color: rgba(0,0,0,0.1) !important;
+}
+
+.bg-darker {
+  background-color: rgba(0,0,0,0.175) !important;
+}
