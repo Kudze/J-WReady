@@ -12,7 +12,7 @@ class ShopController extends AbstractController
      */
     public function catalogue()
     {
-        return $this->render('web/static/home.html.twig');
+        return $this->render('web/shop/catalogue.html.twig');
     }
 
     /**
