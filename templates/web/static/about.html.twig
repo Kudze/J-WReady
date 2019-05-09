@@ -1,0 +1,24 @@
+{% extends 'web/base.html.twig' %}
+
+{% block title %}About us{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid text-center pt-5 mt-4 pb-5 mb-5 w-75">
+        <h1 class="display-4">About us!</h1>
+        <hr class="w-75 mb-4">
+        <div class="text-left w-75 w-max-1000px mx-auto">
+            <h2 class="mb-3 mb-xl-5">J&WReady is the world-wide jewellery drop-shipping company!</h2>
+            <h5 class="text-muted pl-4 pr-4">We are located in Vilnius, Lithuania. However, our services are available world-wide.
+                We are trying our
+                best to improve the way that you can purchase cheap and good Jewellery online!</h5>
+        </div>
+        <hr class="w-75 mb-4 mt-4">
+        <div class="text-left w-75 w-max-1000px mx-auto">
+            <a href="{{ path("faq") }}"><button type="button" class="btn btn-primary my-2 mx-1">Frequently Asked Questions</button></a>
+            <a href="{{ path("tos") }}"><button type="button" class="btn btn-primary my-2 mx-1">Terms Of Service</button></a>
+            <a href="{{ path("catalogue") }}"><button type="button" class="btn btn-primary my-2 mx-1">Check Our Catalogue</button></a>
+        </div>
+    </div>
+
+{% endblock %}

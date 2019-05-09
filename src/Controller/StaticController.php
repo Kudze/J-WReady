@@ -20,7 +20,7 @@ class StaticController extends AbstractController
      */
     public function about()
     {
-        return $this->render('web/static/home.html.twig');
+        return $this->render('web/static/about.html.twig');
     }
 
     /**
@@ -28,7 +28,7 @@ class StaticController extends AbstractController
      */
     public function tos()
     {
-        return $this->render('web/static/home.html.twig');
+        return $this->render('web/static/tos.html.twig');
     }
 
     /**
@@ -36,6 +36,6 @@ class StaticController extends AbstractController
      */
     public function faq()
     {
-        return $this->render('web/static/home.html.twig');
+        return $this->render('web/static/faq.html.twig');
     }
 }

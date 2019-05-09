@@ -4,7 +4,7 @@
 @import "./components/footer";
 
 .bg-white {
-  background-color: #fff;
+  background-color: #f6f6f6 !important;
 }
 
 .bg-dark {
@@ -13,4 +13,8 @@
 
 .bg-darker {
   background-color: rgba(0,0,0,0.175) !important;
+}
+
+.w-max-1000px {
+  max-width: 1000px !important;
 }
