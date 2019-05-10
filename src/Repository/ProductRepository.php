@@ -19,9 +19,6 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    /**
-     * @param $tags - array of Tag IDs.
-     */
     public function findByTags($tags)
     {
         $qb = $this->createQueryBuilder('p');
@@ -29,6 +26,26 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
+    }
+
+    public function search($query)
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.tag', 't')
+            ->orWhere('t.title LIKE :query')
+            ->orWhere('p.title LIKE :query')
+            ->orWhere('p.description LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    public function getFirstX($x) {
+        return $this->createQueryBuilder('p')
+            ->setMaxResults($x)
+            ->getQuery()
+            ->getResult();
     }
 
     // /**

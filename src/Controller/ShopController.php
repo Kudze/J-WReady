@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\CatalogueSearch;
 use App\Repository\ProductRepository;
 use App\Repository\ProductTagRepository;
 use App\Form\CatalogueFilter;
@@ -35,7 +36,9 @@ class ShopController extends AbstractController
         }
 
         //Paging could be added, but its not necceseary at this point in time.
-        $productData = $productRepository->findByTags($tData);
+        $productData = [];
+        if ($tData !== [])
+            $productData = $productRepository->findByTags($tData);
 
         return $this->render(
             'web/shop/catalogue.html.twig',
@@ -49,9 +52,28 @@ class ShopController extends AbstractController
     /**
      * @Route("/search/", name="search")
      */
-    public function search()
+    public function search(Request $request, ProductRepository $productRepository)
     {
-        return $this->render('web/static/home.html.twig');
+        $data = [];
+        $form = $this->createForm(CatalogueSearch::class, $data);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+            $data = $form->getData();
+
+        //Paging could be added, but its not necceseary at this point in time.
+        $productData = [];
+        if ($data !== [])
+            $productData = $productRepository->search($data["query"]);
+
+        return $this->render(
+            'web/shop/search.html.twig',
+            [
+                'form' => $form->createView(),
+                'products' => $productData
+            ]
+        );
     }
 
     /**
@@ -61,7 +83,7 @@ class ShopController extends AbstractController
     {
         $product = $productRepository->find($id);
 
-        if($product === null)
+        if ($product === null)
             return $this->redirectToRoute("catalogue");
 
         return $this->render(

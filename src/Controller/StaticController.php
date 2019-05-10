@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -10,9 +11,9 @@ class StaticController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function home()
+    public function home(ProductRepository $productRepository)
     {
-        return $this->render('web/static/home.html.twig');
+        return $this->render('web/static/home.html.twig', ['products' => $productRepository->getFirstX(8)]);
     }
 
     /**
