@@ -29,16 +29,17 @@ class ShopController extends AbstractController
             $data = $form->getData();
 
         //Paging could be added, but its not necceseary at this point in time.
-        var_dump($productRepository->findBy(
+        $productData = $productRepository->findBy(
             [
                 "tag" => $data
             ]
-        ));
+        );
 
         return $this->render(
             'web/shop/catalogue.html.twig',
             [
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'products' => $productData
             ]
         );
     }
