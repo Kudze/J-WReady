@@ -37,6 +37,11 @@ class Product
      */
     private $tag;
 
+    /**
+     * @ORM\Column(type="string", length=1024)
+     */
+    private $image;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Product
     public function setTag(?ProductTag $tag): self
     {
         $this->tag = $tag;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

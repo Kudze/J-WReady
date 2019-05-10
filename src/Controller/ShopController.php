@@ -18,22 +18,24 @@ class ShopController extends AbstractController
     public function catalogue(Request $request, ProductTagRepository $productTagRepository, ProductRepository $productRepository)
     {
         $data = [];
-        foreach($productTagRepository->findAll() as $tag)
+        foreach ($productTagRepository->findAll() as $tag)
             $data[$tag->getId()] = true;
 
         $form = $this->createForm(CatalogueFilter::class, $data);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
+        if ($form->isSubmitted() && $form->isValid())
             $data = $form->getData();
 
+        $tData = [];
+        foreach ($data as $tag => $enabled) {
+            if ($enabled)
+                array_push($tData, $tag);
+        }
+
         //Paging could be added, but its not necceseary at this point in time.
-        $productData = $productRepository->findBy(
-            [
-                "tag" => $data
-            ]
-        );
+        $productData = $productRepository->findByTags($tData);
 
         return $this->render(
             'web/shop/catalogue.html.twig',
@@ -50,5 +52,23 @@ class ShopController extends AbstractController
     public function search()
     {
         return $this->render('web/static/home.html.twig');
+    }
+
+    /**
+     * @Route("/item/{id}", name="view_item", requirements={"id"="\d+"})
+     */
+    public function view($id, ProductRepository $productRepository)
+    {
+        $product = $productRepository->find($id);
+
+        if($product === null)
+            return $this->redirectToRoute("catalogue");
+
+        return $this->render(
+            'web/shop/view_item.html.twig',
+            [
+                "product" => $product
+            ]
+        );
     }
 }

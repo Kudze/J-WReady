@@ -19,6 +19,18 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    /**
+     * @param $tags - array of Tag IDs.
+     */
+    public function findByTags($tags)
+    {
+        $qb = $this->createQueryBuilder('p');
+        return $qb->andWhere($qb->expr()->in('p.tag', $tags))
+            ->getQuery()
+            ->getResult();
+
+    }
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */
