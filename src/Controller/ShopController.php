@@ -7,16 +7,12 @@ use App\Repository\ProductRepository;
 use App\Repository\ProductTagRepository;
 use App\Form\CatalogueFilter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ShopController extends AbstractController
 {
-    /**
-     * @Route("/catalogue/", name="catalogue")
-     */
-    public function catalogue(Request $request, ProductTagRepository $productTagRepository, ProductRepository $productRepository)
+    private function handleCatalogue(Request $request, ProductTagRepository $productTagRepository, ProductRepository $productRepository, string $dataView)
     {
         $data = [];
         foreach ($productTagRepository->findAll() as $tag)
@@ -44,15 +40,29 @@ class ShopController extends AbstractController
             'web/shop/catalogue.html.twig',
             [
                 'form' => $form->createView(),
-                'products' => $productData
+                'products' => $productData,
+                'data' => $dataView
             ]
         );
     }
 
     /**
-     * @Route("/search/", name="search")
+     * @Route("/catalogue_table/", name="catalogue")
      */
-    public function search(Request $request, ProductRepository $productRepository)
+    public function catalogue(Request $request, ProductTagRepository $productTagRepository, ProductRepository $productRepository)
+    {
+        return $this->handleCatalogue($request, $productTagRepository, $productRepository, 'table');
+    }
+
+    /**
+     * @Route("/catalogue_list/", name="catalogueList")
+     */
+    public function catalogueList(Request $request, ProductTagRepository $productTagRepository, ProductRepository $productRepository)
+    {
+        return $this->handleCatalogue($request, $productTagRepository, $productRepository, 'list');
+    }
+
+    private function handleSearch(Request $request, ProductRepository $productRepository, string $dataView)
     {
         $data = [];
         $form = $this->createForm(CatalogueSearch::class, $data);
@@ -71,9 +81,26 @@ class ShopController extends AbstractController
             'web/shop/search.html.twig',
             [
                 'form' => $form->createView(),
-                'products' => $productData
+                'products' => $productData,
+                'data' => $dataView
             ]
         );
+    }
+
+    /**
+     * @Route("/search_table/", name="search")
+     */
+    public function search(Request $request, ProductRepository $productRepository)
+    {
+        return $this->handleSearch($request, $productRepository, 'table');
+    }
+
+    /**
+     * @Route("/search_list/", name="searchList")
+     */
+    public function searchList(Request $request, ProductRepository $productRepository)
+    {
+        return $this->handleSearch($request, $productRepository, 'list');
     }
 
     /**

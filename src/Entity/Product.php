@@ -42,6 +42,15 @@ class Product
      */
     private $image;
 
+    public function __construct($title = "", $description = "", $price = 0, $tag = null, $image = "")
+    {
+        $this->title = $title;
+        $this->description = $description;
+        $this->price = $price;
+        $this->tag = $tag;
+        $this->image = $image;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

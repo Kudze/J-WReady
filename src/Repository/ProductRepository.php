@@ -19,6 +19,12 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    /**
+     * @param $tags - Array of tag IDs.
+     * @return mixed - Array of product entities.
+     *
+     * Fetches product enteties that contain the tags described in $tags.
+     */
     public function findByTags($tags)
     {
         $qb = $this->createQueryBuilder('p');
@@ -28,6 +34,12 @@ class ProductRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * @param $query - search text
+     * @return mixed - Array of product entites or null.
+     *
+     * Searches the database for specific product.
+     */
     public function search($query)
     {
         return $this->createQueryBuilder('p')

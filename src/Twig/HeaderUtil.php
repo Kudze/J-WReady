@@ -19,13 +19,25 @@ class HeaderUtil extends AbstractExtension
     {
         return [
             new TwigFilter('activeHeaderCheck', [$this, 'checkIfRouteIsActive']),
+            new TwigFilter('activeHeadersCheck', [$this, 'checkIfRoutesAreActive']),
         ];
     }
 
     public function checkIfRouteIsActive($route)
     {
-        if($this->requestStack->getCurrentRequest()->get('_route') == $route)
+        if ($this->requestStack->getCurrentRequest()->get('_route') == $route)
             return "active";
+
+        return "";
+    }
+
+    public function checkIfRoutesAreActive($routes)
+    {
+        $currRoute = $this->requestStack->getCurrentRequest()->get('_route');
+
+        foreach ($routes as $route)
+            if ($currRoute == $route)
+                return "active";
 
         return "";
     }
