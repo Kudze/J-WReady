@@ -56,6 +56,12 @@ class MockProducts extends Command
                 'https://cdn.shopify.com/s/files/1/0031/4068/1794/products/interlink-necklace-yellow-gold-p-1_460x.jpg?v=1541964125'
             ]
         ];
+        $rewievs = [
+            null,
+            null,
+            "https://www.youtube.com/embed/JPV38t04NT0",
+            "https://www.youtube.com/embed/0UjkclZIZ0M"
+        ];
 
         for ($i = 0; $i < 20; $i++) {
             $tag = $tags[array_rand($tags)];
@@ -67,6 +73,7 @@ class MockProducts extends Command
                     ->setPrice(random_int(1, 2000) / 100.0)
                     ->setTag($tag)
                     ->setImage($images[$tag->getTitle()][random_int(0, 2)])
+                    ->setReview($rewievs[array_rand($rewievs)])
             );
         }
 

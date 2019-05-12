@@ -27,6 +27,17 @@
                 </div>
             </div>
         </div>
+        <hr class="mt-4 mb-4">
+
+        {% if product.review is not null %}
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="{{ product.review }}" allowfullscreen></iframe>
+            </div>
+        {% else %}
+            <h3 class="text-muted">No video review provided...</h3>
+        {% endif %}
+
+        <hr class="mt-4">
     </div>
 
 {% endblock %}

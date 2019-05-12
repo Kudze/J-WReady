@@ -42,6 +42,11 @@ class Product
      */
     private $image;
 
+    /**
+     * @ORM\Column(type="string", length=1024, nullable=true)
+     */
+    private $review;
+
     public function __construct($title = "", $description = "", $price = 0, $tag = null, $image = "")
     {
         $this->title = $title;
@@ -112,6 +117,18 @@ class Product
     public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getReview(): ?string
+    {
+        return $this->review;
+    }
+
+    public function setReview(?string $review): self
+    {
+        $this->review = $review;
 
         return $this;
     }
