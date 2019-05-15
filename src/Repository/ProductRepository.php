@@ -53,6 +53,22 @@ class ProductRepository extends ServiceEntityRepository
 
     }
 
+    public function findByTagsAndQuery(array $tags, ?string $query) {
+        $qb = $this->createQueryBuilder('p');
+
+        if($query !== null)
+            $qb->leftJoin('p.tag', 't')
+                ->orWhere('t.title LIKE :query')
+                ->orWhere('p.title LIKE :query')
+                ->orWhere('p.description LIKE :query')
+                ->setParameter('query', '%' . $query . '%');
+
+        if($tags !== [])
+            $qb->andWhere($qb->expr()->in('p.tag', $tags));
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function getFirstX($x) {
         return $this->createQueryBuilder('p')
             ->setMaxResults($x)

@@ -15,11 +15,6 @@
         <input type="submit" class="btn btn-primary" value="Filter"/>
         {{ form_end(form) }}
 
-        <nav class="nav nav-pills nav-justified w-50 mx-auto mt-4">
-            <a class="nav-item nav-link {{ "catalogue" | activeHeaderCheck }}" href="{{ path("catalogue") }}">Table</a>
-            <a class="nav-item nav-link {{ "catalogueList" | activeHeaderCheck }}" href="{{ path("catalogueList") }}">List</a>
-        </nav>
-
         <hr class="w-75 mb-4">
 
         <div class="w-75 justify-content-center mx-auto">
@@ -30,7 +25,6 @@
                     <h5 class="text-muted mb-5">Try editing your filters!</h5>
                 </div>
             {% else %}
-                {% if data == "table" %}
                     <div class="row">
                         {% for product in products %}
 
@@ -49,29 +43,6 @@
                             </div>
                         {% endfor %}
                     </div>
-                {% else %}
-
-                    {% for product in products %}
-
-                        <div class="media my-5">
-                            <img src="{{ product.image }}" class="mr-3 my-1" alt="...">
-                            <div class="media-body text-left">
-                                <h5 class="mt-0">{{ product.title }}</h5>
-                                <p class="text-muted">{{ product.description | slice(0, 100) }}...</p>
-                                <div class="row">
-                                    <div class="col text-left">
-                                        <a href="{{ path("view_item", {id: product.id}) }}">View
-                                            Item</a>
-                                    </div>
-                                    <div class="col text-right">
-                                        {{ product.price }}$
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-
-                {% endif %}
             {% endif %}
 
         </div>

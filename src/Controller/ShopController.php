@@ -12,59 +12,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ShopController extends AbstractController
 {
-    private function handleCatalogue(Request $request, ProductTagRepository $productTagRepository, ProductRepository $productRepository, string $dataView)
+    /**
+     * @Route("/catalogue/", name="catalogue")
+     */
+    public function catalogue(Request $request, ProductTagRepository $productTagRepository, ProductRepository $productRepository)
     {
         $data = [];
         foreach ($productTagRepository->findAll() as $tag)
             $data[$tag->getId()] = true;
 
-        $form = $this->createForm(CatalogueFilter::class, $data);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid())
-            $data = $form->getData();
-
-        $tData = [];
-        foreach ($data as $tag => $enabled) {
-            if ($enabled)
-                array_push($tData, $tag);
-        }
-
-        //Paging could be added, but its not necceseary at this point in time.
-        $productData = [];
-        if ($tData !== [])
-            $productData = $productRepository->findByTags($tData);
-
-        return $this->render(
-            'web/shop/catalogue.html.twig',
-            [
-                'form' => $form->createView(),
-                'products' => $productData,
-                'data' => $dataView
-            ]
-        );
-    }
-
-    /**
-     * @Route("/catalogue_table/", name="catalogue")
-     */
-    public function catalogue(Request $request, ProductTagRepository $productTagRepository, ProductRepository $productRepository)
-    {
-        return $this->handleCatalogue($request, $productTagRepository, $productRepository, 'table');
-    }
-
-    /**
-     * @Route("/catalogue_list/", name="catalogueList")
-     */
-    public function catalogueList(Request $request, ProductTagRepository $productTagRepository, ProductRepository $productRepository)
-    {
-        return $this->handleCatalogue($request, $productTagRepository, $productRepository, 'list');
-    }
-
-    private function handleSearch(Request $request, ProductRepository $productRepository, string $dataView)
-    {
-        $data = [];
         $form = $this->createForm(CatalogueSearch::class, $data);
 
         $form->handleRequest($request);
@@ -72,35 +28,26 @@ class ShopController extends AbstractController
         if ($form->isSubmitted() && $form->isValid())
             $data = $form->getData();
 
+        $tData = [];
+        $search = null;
+        foreach ($data as $tag => $enabled) {
+            if ($tag === "query")
+                $search = $enabled;
+
+            else if ($enabled)
+                array_push($tData, $tag);
+        }
+
         //Paging could be added, but its not necceseary at this point in time.
-        $productData = [];
-        if ($data !== [])
-            $productData = $productRepository->search($data["query"]);
+        $productData = $productRepository->findByTagsAndQuery($tData, $search);
 
         return $this->render(
-            'web/shop/search.html.twig',
+            'web/shop/catalogue.html.twig',
             [
                 'form' => $form->createView(),
-                'products' => $productData,
-                'data' => $dataView
+                'products' => $productData
             ]
         );
-    }
-
-    /**
-     * @Route("/search_table/", name="search")
-     */
-    public function search(Request $request, ProductRepository $productRepository)
-    {
-        return $this->handleSearch($request, $productRepository, 'table');
-    }
-
-    /**
-     * @Route("/search_list/", name="searchList")
-     */
-    public function searchList(Request $request, ProductRepository $productRepository)
-    {
-        return $this->handleSearch($request, $productRepository, 'list');
     }
 
     /**
